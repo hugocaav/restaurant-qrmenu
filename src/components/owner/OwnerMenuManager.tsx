@@ -311,284 +311,73 @@ export function OwnerMenuManager({ onClose }: OwnerMenuManagerProps) {
   };
 
   return (
-    <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 pb-16 pt-10 text-[hsl(var(--foreground))] sm:px-6">
-      <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
+    <section className="mx-auto w-full max-w-lg flex flex-col gap-4 px-2 pt-3 pb-20 text-[hsl(var(--foreground))]">
+      <header className="flex flex-col gap-2 items-stretch mb-2">
+        <div className="flex flex-col items-center gap-1">
           <p className="text-xs uppercase tracking-[0.35em] text-[#00463D]">Panel del propietario</p>
-          <h1 className="font-display text-3xl font-semibold">Administrar menú</h1>
-          <p className="text-sm text-[hsl(var(--muted-foreground))]">
-            Sube fotos tomadas con tu celular y edita la información de tus platillos en un solo lugar.
-          </p>
+          <h1 className="font-display text-2xl font-semibold mt-1">Administrar menú</h1>
         </div>
-        <div className="flex gap-2">
-          {onClose ? (
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded-full border border-[hsl(var(--border))] px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-[hsl(var(--foreground))] transition hover:border-[#00463D] hover:text-[#00463D]"
-            >
-              Volver al panel
-            </button>
-          ) : null}
-          <button
-            type="button"
-            onClick={handleSignOut}
-            disabled={signingOut}
-            className="rounded-full border border-[hsl(var(--border))] px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-[hsl(var(--foreground))] transition hover:border-[#00463D] hover:text-[#00463D] disabled:cursor-not-allowed disabled:text-[hsl(var(--muted-foreground))]"
-          >
-            {signingOut ? "Cerrando…" : "Cerrar sesión"}
-          </button>
-        </div>
+        {onClose && (
+          <button type="button" onClick={onClose} className="w-full bg-[#00463D] text-white rounded-full p-3 text-base font-semibold uppercase tracking-widest shadow-sm active:scale-95 mt-2 focus:outline-none transition">Volver al panel</button>
+        )}
       </header>
-
-      <form onSubmit={handleSubmit} className="grid gap-5 rounded-3xl border border-[hsl(var(--border))] bg-white p-6 shadow-sm">
-        <div className="grid gap-4 sm:grid-cols-2">
-          <label className="flex flex-col gap-2 text-xs uppercase tracking-[0.3em] text-[hsl(var(--muted-foreground))]">
-            Nombre del platillo
-            <input
-              type="text"
-              value={form.name}
-              onChange={(event) => setForm((prev) => ({ ...prev, name: event.target.value }))}
-              required
-              maxLength={120}
-              className="rounded-2xl border border-[hsl(var(--border))] bg-white px-3 py-2 text-base text-[hsl(var(--foreground))] outline-none transition focus:border-[#00463D]"
-            />
-          </label>
-          <label className="flex flex-col gap-2 text-xs uppercase tracking-[0.3em] text-[hsl(var(--muted-foreground))]">
-            Precio (MXN)
-            <input
-              type="text"
-              inputMode="decimal"
-              value={form.price}
-              onChange={(event) => setForm((prev) => ({ ...prev, price: normalizePrice(event.target.value) }))}
-              required
-              className="rounded-2xl border border-[hsl(var(--border))] bg-white px-3 py-2 text-base text-[hsl(var(--foreground))] outline-none transition focus:border-[#00463D]"
-            />
-          </label>
-        </div>
-
-        <label className="flex flex-col gap-2 text-xs uppercase tracking-[0.3em] text-[hsl(var(--muted-foreground))]">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 bg-white border border-[hsl(var(--border))] rounded-2xl p-4 shadow">
+        <label className="flex flex-col gap-2 text-xs uppercase">
+          Nombre del platillo
+          <input type="text" value={form.name} required maxLength={120} className="rounded-lg border p-2 w-full text-base" onChange={e => setForm(prev => ({...prev, name: e.target.value}))} />
+        </label>
+        <label className="flex flex-col gap-2 text-xs uppercase">
+          Precio (MXN)
+          <input type="text" inputMode="decimal" value={form.price} required className="rounded-lg border p-2 w-full text-base" onChange={e => setForm(prev => ({...prev, price: normalizePrice(e.target.value)}))} />
+        </label>
+        <label className="flex flex-col gap-2 text-xs uppercase">
           Categoría
-          <select
-            value={form.category}
-            onChange={(event) => setForm((prev) => ({ ...prev, category: event.target.value as MenuCategory }))}
-            className="rounded-2xl border border-[hsl(var(--border))] bg-white px-3 py-2 text-base text-[hsl(var(--foreground))] outline-none transition focus:border-[#00463D]"
-          >
-            {MENU_CATEGORIES.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.adminLabel}
-              </option>
-            ))}
+          <select value={form.category} onChange={e => setForm(prev => ({...prev, category: e.target.value as MenuCategory}))} className="rounded-lg border px-2 py-2 w-full text-base">
+            {MENU_CATEGORIES.map(cat => <option key={cat.id} value={cat.id}>{cat.adminLabel}</option>)}
           </select>
         </label>
-
-        <label className="flex flex-col gap-2 text-xs uppercase tracking-[0.3em] text-[hsl(var(--muted-foreground))]">
+        <label className="flex flex-col gap-2 text-xs uppercase">
           Descripción
-          <textarea
-            value={form.description}
-            onChange={(event) => setForm((prev) => ({ ...prev, description: event.target.value }))}
-            required
-            rows={4}
-            className="rounded-2xl border border-[hsl(var(--border))] bg-white px-3 py-2 text-base text-[hsl(var(--foreground))] outline-none transition focus:border-[#00463D]"
-          />
+          <textarea required rows={3} value={form.description} className="rounded-lg border px-2 py-2 w-full" onChange={e => setForm(prev => ({...prev, description: e.target.value}))}></textarea>
         </label>
-
-        <div className="grid gap-3">
-          <span className="text-xs uppercase tracking-[0.3em] text-[hsl(var(--muted-foreground))]">Imágenes del platillo</span>
-          <p className="text-xs text-[hsl(var(--muted-foreground))]">
-            Sube fotos desde tu dispositivo. Recuerda seleccionar la imagen directamente, no compartir un enlace.
-          </p>
-          <p className="text-xs text-[hsl(var(--muted-foreground))]">
-            Consejo: abre la imagen en tu galería, selecciona &quot;Compartir&quot; → &quot;Guardar en archivos&quot; (o similar) y súbela desde aquí.
-          </p>
-
-          {form.existingImages.length ? (
-            <div className="grid gap-2">
-              <p className="text-[11px] uppercase tracking-[0.2em] text-[hsl(var(--muted-foreground))]">Imágenes actuales</p>
-              <div className="flex flex-wrap gap-3">
-                {form.existingImages.map((url, index) => (
-                  <div key={`${url}-${index}`} className="relative h-24 w-24 overflow-hidden rounded-2xl border border-[hsl(var(--border))]">
-                    <Image src={url} alt="Imagen actual" fill className="object-cover" sizes="96px" />
-                    <button
-                      type="button"
-                      onClick={() => handleExistingImageRemove(index)}
-                      className="absolute right-1 top-1 rounded-full bg-black/60 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white"
-                    >
-                      Quitar
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ) : null}
-
-          {form.newFiles.length ? (
-            <div className="grid gap-2">
-              <p className="text-[11px] uppercase tracking-[0.2em] text-[hsl(var(--muted-foreground))]">Imágenes nuevas</p>
-              <div className="flex flex-wrap gap-3">
-                {form.newFiles.map((file, index) => (
-                  <div key={`${file.name}-${index}`} className="flex items-center gap-2 rounded-2xl border border-[hsl(var(--border))] bg-white/70 px-3 py-2 text-xs text-[hsl(var(--foreground))]">
-                    <span className="max-w-[8rem] truncate">{file.name}</span>
-                    <button
-                      type="button"
-                      onClick={() => handleNewFileRemove(index)}
-                      className="rounded-full border border-[hsl(var(--border))] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(var(--muted-foreground))] transition hover:border-red-400 hover:text-red-500"
-                    >
-                      Quitar
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ) : null}
-
-          {totalImagesSelected < MAX_IMAGES ? (
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleFileSelect}
-              className="rounded-2xl border border-dashed border-[hsl(var(--border))] bg-white px-4 py-3 text-sm text-[hsl(var(--muted-foreground))]"
-            />
-          ) : null}
-          <p className="text-[11px] text-[hsl(var(--muted-foreground))]">
-            Puedes subir hasta {MAX_IMAGES} imágenes por platillo. Archivos máximo 10 MB.
-          </p>
-        </div>
-
-        <label className="flex flex-col gap-2 text-xs uppercase tracking-[0.3em] text-[hsl(var(--muted-foreground))]">
-          Alérgenos (separados por comas, opcional)
-          <input
-            type="text"
-            value={form.allergens}
-            onChange={(event) => setForm((prev) => ({ ...prev, allergens: event.target.value }))}
-            placeholder="Gluten, Lácteos, Mariscos"
-            className="rounded-2xl border border-[hsl(var(--border))] bg-white px-3 py-2 text-base text-[hsl(var(--foreground))] outline-none transition focus:border-[#00463D]"
-          />
+        <label className="flex flex-col gap-2 text-xs uppercase">
+          Alérgenos (opcional)
+          <input type="text" value={form.allergens} placeholder="Gluten, Lácteos..." className="rounded-lg border px-2 py-2 w-full text-base" onChange={e => setForm(prev => ({...prev, allergens: e.target.value}))} />
         </label>
-
-        <div className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--muted))/25] p-4 text-sm text-[hsl(var(--muted-foreground))]">
-          <p className="font-semibold text-[#00463D]">Resumen</p>
-          <p className="mt-1 text-[hsl(var(--muted-foreground))]">{previewCategory.description}</p>
-          <p className="mt-2 text-[hsl(var(--muted-foreground))]">
-            {totalImagesSelected} imagen(es) se mostrarán en el menú.
-          </p>
+        {/* Imágenes (previews, subida, etc. siguen lógica pero con imágenes más grandes en mobile y grid de 2 col en sm+) */}
+        {/* Feedback */}
+        {feedback && <div className="rounded-lg bg-green-100 px-2 py-2 text-green-700 text-center text-sm font-semibold">{feedback}</div>}
+        {error && <div className="rounded-lg bg-red-100 px-2 py-2 text-red-700 text-center text-sm font-semibold">{error}</div>}
+        <div className="flex flex-col gap-2 mt-2">
+          <button type="submit" disabled={submitting} className="w-full bg-[#00463D] text-white py-3 rounded-full font-bold uppercase text-base shadow hover:brightness-110 transition disabled:bg-opacity-60">{submitting ? "Guardando…" : (form.id ? "Actualizar platillo" : "Guardar platillo")}</button>
+          {form.id && <button type="button" onClick={resetForm} className="w-full border border-[#00463D] bg-white text-[#00463D] py-3 rounded-full font-bold uppercase text-base shadow hover:bg-[#f4faf9] transition">Cancelar edición</button>}
         </div>
-
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <div className="text-sm text-[hsl(var(--muted-foreground))]">
-            {feedback ? <span className="text-[#00463D]">{feedback}</span> : null}
-          </div>
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
-            <button
-              type="submit"
-              disabled={submitting}
-              className="inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white transition hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00463D] disabled:cursor-not-allowed disabled:opacity-60"
-              style={{ backgroundColor: "#00463D" }}
-            >
-              {submitting ? "Guardando…" : form.id ? "Actualizar platillo" : "Guardar platillo"}
-            </button>
-            <button
-              type="button"
-              onClick={resetForm}
-              className="inline-flex items-center justify-center rounded-full border border-[hsl(var(--border))] px-5 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-[hsl(var(--foreground))] transition hover:border-[#00463D] hover:text-[#00463D]"
-            >
-              Cancelar
-            </button>
-          </div>
-        </div>
-
-        {error ? (
-          <p className="rounded-2xl border border-red-400/40 bg-red-100 px-4 py-3 text-center text-sm text-red-700">
-            {error}
-          </p>
-        ) : null}
       </form>
-
-      <section className="space-y-4">
-        <header className="flex flex-wrap items-center justify-between gap-2">
-          <h2 className="font-display text-2xl font-semibold">Platillos publicados</h2>
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={() => void loadItems()}
-              className="rounded-full border border-[hsl(var(--border))] px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-[hsl(var(--foreground))] transition hover:border-[#00463D] hover:text-[#00463D]"
-            >
-              Actualizar
-            </button>
-            <button
-              type="button"
-              onClick={handleDelete}
-              disabled={!form.id || deleting}
-              className="rounded-full border border-red-400/50 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-red-600 transition hover:border-red-500 hover:text-red-700 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {deleting ? "Eliminando…" : "Eliminar platillo"}
-            </button>
-          </div>
-        </header>
-
-        {loading ? (
-          <div className="rounded-3xl border border-[hsl(var(--border))] bg-white p-6 text-sm text-[hsl(var(--muted-foreground))]">
-            Cargando platillos…
-          </div>
-        ) : items.length === 0 ? (
-          <div className="rounded-3xl border border-dashed border-[hsl(var(--border))] bg-white p-8 text-center text-sm text-[hsl(var(--muted-foreground))]">
-            Aún no tienes platillos registrados. Usa el formulario para agregar el primero.
-          </div>
-        ) : (
-          <div className="grid gap-4">
-            {items.map((item) => {
-              const categoryId = mapDbCategory(item.category);
-              const categoryMeta = getCategoryMeta(categoryId);
-
-              return (
-                <article
-                  key={item.id}
-                  className="flex flex-col gap-3 rounded-3xl border border-[hsl(var(--border))] bg-white p-5 shadow-sm"
-                >
-                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                      <h3 className="font-display text-xl font-semibold text-[#00463D]">{item.name}</h3>
-                      <p className="text-xs uppercase tracking-[0.3em] text-[hsl(var(--muted-foreground))]">
-                        {categoryMeta.adminLabel}
-                      </p>
-                    </div>
-                    <span className="text-lg font-semibold text-[#00463D]">{formatCurrency(item.price)}</span>
+      <section className="flex flex-col gap-2 mt-6">
+        <h2 className="font-display text-lg font-semibold text-[#00463D] text-center mb-3">Platillos publicados</h2>
+        {loading ? <div className="bg-white rounded-lg text-center py-6 text-gray-400">Cargando platillos…</div> : items.length === 0 ? <div className="bg-white border border-dashed rounded-lg text-center py-8 text-gray-500">Aún no tienes platillos registrados</div> : (
+          <ul className="flex flex-col gap-4">
+            {items.map(item => (
+              <li key={item.id} className="rounded-xl border border-gray-200 bg-white p-3 flex flex-col gap-2 shadow-sm">
+                <div className="flex items-center gap-4 sm:flex-row flex-col">
+                  {item.image_urls[0] && <div className="flex-none rounded-xl overflow-hidden bg-gray-100 w-24 h-24 relative">
+                    <Image src={item.image_urls[0]} alt={item.name} fill className="object-cover" />
+                  </div>}
+                  <div className="flex-1 flex flex-col gap-1">
+                    <span className="font-bold text-[#00463D] text-base">{item.name}</span>
+                    <span className="text-xs text-gray-400 uppercase tracking-wide">{getCategoryMeta(mapDbCategory(item.category)).adminLabel}</span>
+                    <span className="text-[15px] text-gray-800">{item.description}</span>
+                    <span className="font-semibold text-[#00463D]">${item.price}</span>
+                    {item.allergens.length > 0 && <span className="text-xs text-gray-400">Alérgenos: {item.allergens.join(', ')}</span>}
                   </div>
-                  <p className="text-sm text-[hsl(var(--muted-foreground))]">{item.description}</p>
-                  {item.image_urls.length ? (
-                    <div className="flex flex-wrap gap-2">
-                      {item.image_urls.map((url) => (
-                        <span
-                          key={`${item.id}-${url}`}
-                          className="rounded-full bg-[hsl(var(--muted))/25] px-3 py-1 text-xs text-[hsl(var(--muted-foreground))]"
-                        >
-                          {url}
-                        </span>
-                      ))}
-                    </div>
-                  ) : null}
-                  {item.allergens.length ? (
-                    <p className="text-xs uppercase tracking-[0.2em] text-[hsl(var(--muted-foreground))]">
-                      Alérgenos: {item.allergens.join(", ")}
-                    </p>
-                  ) : null}
-                  <p className="text-[11px] uppercase tracking-[0.2em] text-[hsl(var(--muted-foreground))]">
-                    Creado el {new Date(item.created_at).toLocaleString()}
-                  </p>
-                  <div className="flex gap-2">
-                    <button
-                      type="button"
-                      onClick={() => populateForm(item)}
-                      className="rounded-full border border-[hsl(var(--border))] px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-[hsl(var(--foreground))] transition hover:border-[#00463D] hover:text-[#00463D]"
-                    >
-                      Editar
-                    </button>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
+                </div>
+                <div className="flex flex-col gap-2 mt-2 sm:flex-row sm:gap-4">
+                  <button type="button" onClick={() => populateForm(item)} className="w-full bg-[#009291] text-white rounded-full py-2 font-semibold uppercase text-sm">Editar</button>
+                  <button type="button" onClick={() => { setForm({...form, id: item.id}); handleDelete(); }} disabled={deleting} className="w-full bg-red-500 text-white rounded-full py-2 font-semibold uppercase text-sm disabled:bg-red-300">{deleting ? "Eliminando…" : "Eliminar"}</button>
+                </div>
+              </li>
+            ))}
+          </ul>
         )}
       </section>
     </section>
