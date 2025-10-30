@@ -317,9 +317,19 @@ export function OwnerMenuManager({ onClose }: OwnerMenuManagerProps) {
           <p className="text-xs uppercase tracking-[0.35em] text-[#00463D]">Panel del propietario</p>
           <h1 className="font-display text-2xl font-semibold mt-1">Administrar menú</h1>
         </div>
-        {onClose && (
-          <button type="button" onClick={onClose} className="w-full bg-[#00463D] text-white rounded-full p-3 text-base font-semibold uppercase tracking-widest shadow-sm active:scale-95 mt-2 focus:outline-none transition">Volver al panel</button>
-        )}
+        <div className="flex flex-col gap-2 mt-2">
+          {onClose && (
+            <button type="button" onClick={onClose} className="w-full bg-[#00463D] text-white rounded-full p-3 text-base font-semibold uppercase tracking-widest shadow-sm active:scale-95 focus:outline-none transition">Volver al panel</button>
+          )}
+          <button
+            type="button"
+            onClick={handleSignOut}
+            disabled={signingOut}
+            className="w-full bg-red-500 text-white rounded-full p-3 text-base font-semibold uppercase tracking-widest shadow-sm active:scale-95 focus:outline-none transition disabled:bg-opacity-60 disabled:cursor-not-allowed font-sans"
+          >
+            {signingOut ? "Cerrando sesión…" : "Cerrar sesión"}
+          </button>
+        </div>
       </header>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 bg-white border border-[hsl(var(--border))] rounded-2xl p-4 shadow">
         <label className="flex flex-col gap-2 text-xs uppercase">
