@@ -340,11 +340,32 @@ export function OwnerMenuManager({ onClose }: OwnerMenuManagerProps) {
           Descripción
           <textarea required rows={3} value={form.description} className="rounded-lg border px-2 py-2 w-full font-sans" onChange={e => setForm(prev => ({...prev, description: e.target.value}))}></textarea>
         </label>
+        {/* Sección de Imágenes */}
+        <div className="flex flex-col gap-2">
+          <label className="text-xs uppercase font-semibold mb-1">Imágenes del platillo (máx {MAX_IMAGES})</label>
+          <div className="flex flex-wrap gap-2 mb-2">
+            {form.existingImages.map((url, idx) => (
+              <div key={url + idx} className="relative w-20 h-20 rounded-lg overflow-hidden border">
+                <Image src={url} alt="Imagen actual" fill className="object-cover" />
+                <button type="button" aria-label="Quitar imagen" onClick={() => handleExistingImageRemove(idx)} className="absolute top-1 right-1 bg-black/70 text-white rounded-full px-2 py-1 text-xs">✕</button>
+              </div>
+            ))}
+            {form.newFiles.map((file, idx) => (
+              <div key={file.name + idx} className="relative w-20 h-20 rounded-lg overflow-hidden border">
+                <img src={URL.createObjectURL(file)} alt={file.name} className="object-cover h-full w-full" />
+                <button type="button" aria-label="Quitar imagen" onClick={() => handleNewFileRemove(idx)} className="absolute top-1 right-1 bg-black/70 text-white rounded-full px-2 py-1 text-xs">✕</button>
+              </div>
+            ))}
+          </div>
+          {totalImagesSelected < MAX_IMAGES && (
+            <input type="file" accept="image/*" multiple onChange={handleFileSelect} className="file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-[#009291] file:text-white file:font-semibold file:cursor-pointer border border-dashed rounded-xl w-full text-sm" />
+          )}
+          <small className="text-[11px] text-gray-500">Puedes subir hasta {MAX_IMAGES} imágenes. Arrastra para reordenar luego de guardar.</small>
+        </div>
         <label className="flex flex-col gap-2 text-xs uppercase">
           Alérgenos (opcional)
           <input type="text" value={form.allergens} placeholder="Gluten, Lácteos..." className="rounded-lg border px-2 py-2 w-full text-base font-sans" onChange={e => setForm(prev => ({...prev, allergens: e.target.value}))} />
         </label>
-        {/* Imágenes (previews, subida, etc. siguen lógica pero con imágenes más grandes en mobile y grid de 2 col en sm+) */}
         {/* Feedback */}
         {feedback && <div className="rounded-lg bg-green-100 px-2 py-2 text-green-700 text-center text-sm font-semibold">{feedback}</div>}
         {error && <div className="rounded-lg bg-red-100 px-2 py-2 text-red-700 text-center text-sm font-semibold">{error}</div>}
