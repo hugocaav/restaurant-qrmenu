@@ -108,7 +108,8 @@ export function OwnerTableQrGenerator({ onClose }: OwnerTableQrGeneratorProps) {
         {qrs.length > 0 && (
           <div className="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2">
             {qrs.map((table) => {
-              const url = `${APP_BASE_URL}/menu/${RESTAURANT_ID}/${table.table_number}?token=${table.session_token}`;
+              // CORREGIDO: usar table.id, no table_number
+              const url = `${APP_BASE_URL}/menu/${RESTAURANT_ID}/${table.id}?token=${table.session_token}`;
               return (
                 <div
                   key={table.id}
