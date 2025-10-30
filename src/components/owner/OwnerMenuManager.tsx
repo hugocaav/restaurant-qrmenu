@@ -57,7 +57,7 @@ function formatCurrency(value: number): string {
   return value.toLocaleString("es-MX", { style: "currency", currency: "MXN" });
 }
 
-const MAX_IMAGES = 6;
+const MAX_IMAGES = 5;
 const IMAGE_MAX_SIZE = 10 * 1024 * 1024; // 10 MB
 
 interface OwnerMenuManagerProps {
@@ -324,33 +324,33 @@ export function OwnerMenuManager({ onClose }: OwnerMenuManagerProps) {
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 bg-white border border-[hsl(var(--border))] rounded-2xl p-4 shadow">
         <label className="flex flex-col gap-2 text-xs uppercase">
           Nombre del platillo
-          <input type="text" value={form.name} required maxLength={120} className="rounded-lg border p-2 w-full text-base" onChange={e => setForm(prev => ({...prev, name: e.target.value}))} />
+          <input type="text" value={form.name} required maxLength={120} className="rounded-lg border p-2 w-full text-base font-sans" onChange={e => setForm(prev => ({...prev, name: e.target.value}))} />
         </label>
         <label className="flex flex-col gap-2 text-xs uppercase">
           Precio (MXN)
-          <input type="text" inputMode="decimal" value={form.price} required className="rounded-lg border p-2 w-full text-base" onChange={e => setForm(prev => ({...prev, price: normalizePrice(e.target.value)}))} />
+          <input type="text" inputMode="decimal" value={form.price} required className="rounded-lg border p-2 w-full text-base font-sans" onChange={e => setForm(prev => ({...prev, price: normalizePrice(e.target.value)}))} />
         </label>
         <label className="flex flex-col gap-2 text-xs uppercase">
           Categoría
-          <select value={form.category} onChange={e => setForm(prev => ({...prev, category: e.target.value as MenuCategory}))} className="rounded-lg border px-2 py-2 w-full text-base">
+          <select value={form.category} onChange={e => setForm(prev => ({...prev, category: e.target.value as MenuCategory}))} className="rounded-lg border px-2 py-2 w-full text-base font-sans">
             {MENU_CATEGORIES.map(cat => <option key={cat.id} value={cat.id}>{cat.adminLabel}</option>)}
           </select>
         </label>
         <label className="flex flex-col gap-2 text-xs uppercase">
           Descripción
-          <textarea required rows={3} value={form.description} className="rounded-lg border px-2 py-2 w-full" onChange={e => setForm(prev => ({...prev, description: e.target.value}))}></textarea>
+          <textarea required rows={3} value={form.description} className="rounded-lg border px-2 py-2 w-full font-sans" onChange={e => setForm(prev => ({...prev, description: e.target.value}))}></textarea>
         </label>
         <label className="flex flex-col gap-2 text-xs uppercase">
           Alérgenos (opcional)
-          <input type="text" value={form.allergens} placeholder="Gluten, Lácteos..." className="rounded-lg border px-2 py-2 w-full text-base" onChange={e => setForm(prev => ({...prev, allergens: e.target.value}))} />
+          <input type="text" value={form.allergens} placeholder="Gluten, Lácteos..." className="rounded-lg border px-2 py-2 w-full text-base font-sans" onChange={e => setForm(prev => ({...prev, allergens: e.target.value}))} />
         </label>
         {/* Imágenes (previews, subida, etc. siguen lógica pero con imágenes más grandes en mobile y grid de 2 col en sm+) */}
         {/* Feedback */}
         {feedback && <div className="rounded-lg bg-green-100 px-2 py-2 text-green-700 text-center text-sm font-semibold">{feedback}</div>}
         {error && <div className="rounded-lg bg-red-100 px-2 py-2 text-red-700 text-center text-sm font-semibold">{error}</div>}
         <div className="flex flex-col gap-2 mt-2">
-          <button type="submit" disabled={submitting} className="w-full bg-[#00463D] text-white py-3 rounded-full font-bold uppercase text-base shadow hover:brightness-110 transition disabled:bg-opacity-60">{submitting ? "Guardando…" : (form.id ? "Actualizar platillo" : "Guardar platillo")}</button>
-          {form.id && <button type="button" onClick={resetForm} className="w-full border border-[#00463D] bg-white text-[#00463D] py-3 rounded-full font-bold uppercase text-base shadow hover:bg-[#f4faf9] transition">Cancelar edición</button>}
+          <button type="submit" disabled={submitting} className="w-full bg-[#00463D] text-white py-3 rounded-full font-bold uppercase text-base shadow hover:brightness-110 transition disabled:bg-opacity-60 font-sans">{submitting ? "Guardando…" : (form.id ? "Actualizar platillo" : "Guardar platillo")}</button>
+          {form.id && <button type="button" onClick={resetForm} className="w-full border border-[#00463D] bg-white text-[#00463D] py-3 rounded-full font-bold uppercase text-base shadow hover:bg-[#f4faf9] transition font-sans">Cancelar edición</button>}
         </div>
       </form>
       <section className="flex flex-col gap-2 mt-6">
@@ -372,8 +372,8 @@ export function OwnerMenuManager({ onClose }: OwnerMenuManagerProps) {
                   </div>
                 </div>
                 <div className="flex flex-col gap-2 mt-2 sm:flex-row sm:gap-4">
-                  <button type="button" onClick={() => populateForm(item)} className="w-full bg-[#009291] text-white rounded-full py-2 font-semibold uppercase text-sm">Editar</button>
-                  <button type="button" onClick={() => { setForm({...form, id: item.id}); handleDelete(); }} disabled={deleting} className="w-full bg-red-500 text-white rounded-full py-2 font-semibold uppercase text-sm disabled:bg-red-300">{deleting ? "Eliminando…" : "Eliminar"}</button>
+                  <button type="button" onClick={() => populateForm(item)} className="w-full bg-[#009291] text-white rounded-full py-2 font-semibold uppercase text-sm font-sans">Editar</button>
+                  <button type="button" onClick={() => { setForm({...form, id: item.id}); handleDelete(); }} disabled={deleting} className="w-full bg-red-500 text-white rounded-full py-2 font-semibold uppercase text-sm font-sans disabled:bg-red-300">{deleting ? "Eliminando…" : "Eliminar"}</button>
                 </div>
               </li>
             ))}
