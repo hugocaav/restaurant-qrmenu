@@ -4,10 +4,8 @@ import { LanguageSelector } from "@/components/menu/LanguageSelector";
 
 export default async function LanguageSelectPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ restaurantId: string; tableId: string }>;
-  searchParams: Promise<{ token?: string }>;
 }) {
   const { restaurantId, tableId } = await params;
   const supabase = await createSupabaseServerClient();

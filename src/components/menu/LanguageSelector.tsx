@@ -1,8 +1,7 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useLocale } from 'next-intl';
-import { locales, type Locale } from '@/i18n/config';
+import { type Locale } from '@/i18n/config';
 
 interface LanguageSelectorProps {
   restaurantId: string;

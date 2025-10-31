@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { LanguageSelector } from './LanguageSelector';
 import type { MenuCategory, MenuItem } from '@/store/cart-store';
 
@@ -35,8 +34,6 @@ export function MenuPageWrapper({
   initialSections,
   MenuClientComponent,
 }: MenuPageWrapperProps) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
   const [hasLocale, setHasLocale] = useState<boolean | null>(null);
   const [mounted, setMounted] = useState(false);
 

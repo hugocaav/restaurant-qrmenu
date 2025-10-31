@@ -6,12 +6,15 @@ const locales = ['es', 'en'] as const;
 export type Locale = (typeof locales)[number];
 
 export default getRequestConfig(async ({ locale }) => {
-  if (!locales.includes(locale as Locale)) {
+  if (!locale || !locales.includes(locale as Locale)) {
     notFound();
   }
 
+  const validLocale = locale as Locale;
+
   return {
-    messages: (await import(`@/messages/${locale}.json`)).default
+    locale: validLocale,
+    messages: (await import(`@/messages/${validLocale}.json`)).default
   };
 });
 
