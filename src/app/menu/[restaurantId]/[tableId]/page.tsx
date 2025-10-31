@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { MenuClient } from "@/components/menu/MenuClient";
+import { MenuPageWrapper } from "@/components/menu/MenuPageWrapper";
 import type { MenuCategory, MenuItem } from "@/store/cart-store";
 import {
   CATEGORY_ALIAS_MAP,
@@ -117,11 +118,12 @@ export default async function MenuPage({
   }
 
   return (
-    <MenuClient
+    <MenuPageWrapper
       restaurantId={restaurantId}
       tableId={tableId}
       restaurantName={restaurantResult.data.name}
       initialSections={sections}
+      MenuClientComponent={MenuClient}
     />
   );
 }

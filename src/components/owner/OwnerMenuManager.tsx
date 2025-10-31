@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useTranslations } from 'next-intl';
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { MENU_CATEGORIES, CATEGORY_ORDER, CATEGORY_ALIAS_MAP, getCategoryMeta } from "@/data/menu-categories";
 import type { MenuCategory } from "@/store/cart-store";
@@ -66,6 +67,9 @@ interface OwnerMenuManagerProps {
 
 export function OwnerMenuManager({ onClose }: OwnerMenuManagerProps) {
   const router = useRouter();
+  const t = useTranslations('admin.menu');
+  const tCommon = useTranslations('admin.common');
+  const tPanel = useTranslations('admin.panel');
   const [items, setItems] = useState<MenuItemRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState<FormState>(INITIAL_FORM);
@@ -212,11 +216,11 @@ export function OwnerMenuManager({ onClose }: OwnerMenuManagerProps) {
       }
 
       if (totalImagesSelected === 0) {
-        throw new Error("Agrega al menos una imagen del platillo");
+        throw new Error(t('noImagesError'));
       }
 
       if (totalImagesSelected > MAX_IMAGES) {
-        throw new Error(`Solo puedes subir hasta ${MAX_IMAGES} imágenes por platillo.`);
+        throw new Error(t('maxImagesError', { max: MAX_IMAGES }));
       }
 
       const allergenTokens = form.allergens
@@ -253,7 +257,7 @@ export function OwnerMenuManager({ onClose }: OwnerMenuManagerProps) {
         throw new Error(detail?.message ?? "No se pudo guardar el platillo");
       }
 
-      setFeedback(form.id ? "Platillo actualizado correctamente" : "Platillo agregado correctamente");
+      setFeedback(form.id ? t('updatedSuccess') : t('savedSuccess'));
       resetForm();
       await loadItems();
     } catch (err) {
@@ -285,7 +289,7 @@ export function OwnerMenuManager({ onClose }: OwnerMenuManagerProps) {
         throw new Error(detail?.message ?? "No se pudo eliminar el platillo");
       }
 
-      setFeedback("Platillo eliminado correctamente");
+      setFeedback(t('deletedSuccess'));
       resetForm();
       await loadItems();
     } catch (err) {
@@ -314,12 +318,12 @@ export function OwnerMenuManager({ onClose }: OwnerMenuManagerProps) {
     <section className="mx-auto w-full max-w-lg flex flex-col gap-4 px-2 pt-3 pb-20 text-[hsl(var(--foreground))]">
       <header className="flex flex-col gap-2 items-stretch mb-2">
         <div className="flex flex-col items-center gap-1">
-          <p className="text-xs uppercase tracking-[0.35em] text-[#00463D]">Panel del propietario</p>
-          <h1 className="font-display text-2xl font-semibold mt-1">Administrar menú</h1>
+          <p className="text-xs uppercase tracking-[0.35em] text-[#00463D]">{tPanel('title')}</p>
+          <h1 className="font-display text-2xl font-semibold mt-1">{t('title')}</h1>
         </div>
         <div className="flex flex-col gap-2 mt-2">
           {onClose && (
-            <button type="button" onClick={onClose} className="w-full bg-[#00463D] text-white rounded-full p-3 text-base font-semibold uppercase tracking-widest shadow-sm active:scale-95 focus:outline-none transition">Volver al panel</button>
+            <button type="button" onClick={onClose} className="w-full bg-[#00463D] text-white rounded-full p-3 text-base font-semibold uppercase tracking-widest shadow-sm active:scale-95 focus:outline-none transition">{tCommon('backToPanel')}</button>
           )}
           <button
             type="button"
@@ -327,66 +331,66 @@ export function OwnerMenuManager({ onClose }: OwnerMenuManagerProps) {
             disabled={signingOut}
             className="w-full bg-red-500 text-white rounded-full p-3 text-base font-semibold uppercase tracking-widest shadow-sm active:scale-95 focus:outline-none transition disabled:bg-opacity-60 disabled:cursor-not-allowed font-sans"
           >
-            {signingOut ? "Cerrando sesión…" : "Cerrar sesión"}
+            {signingOut ? tCommon('loggingOut') : tCommon('logout')}
           </button>
         </div>
       </header>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 bg-white border border-[hsl(var(--border))] rounded-2xl p-4 shadow">
         <label className="flex flex-col gap-2 text-xs uppercase">
-          Nombre del platillo
+          {t('name')}
           <input type="text" value={form.name} required maxLength={120} className="rounded-lg border p-2 w-full text-base font-sans" onChange={e => setForm(prev => ({...prev, name: e.target.value}))} />
         </label>
         <label className="flex flex-col gap-2 text-xs uppercase">
-          Precio (MXN)
+          {t('price')}
           <input type="text" inputMode="decimal" value={form.price} required className="rounded-lg border p-2 w-full text-base font-sans" onChange={e => setForm(prev => ({...prev, price: normalizePrice(e.target.value)}))} />
         </label>
         <label className="flex flex-col gap-2 text-xs uppercase">
-          Categoría
+          {t('category')}
           <select value={form.category} onChange={e => setForm(prev => ({...prev, category: e.target.value as MenuCategory}))} className="rounded-lg border px-2 py-2 w-full text-base font-sans">
             {MENU_CATEGORIES.map(cat => <option key={cat.id} value={cat.id}>{cat.adminLabel}</option>)}
           </select>
         </label>
         <label className="flex flex-col gap-2 text-xs uppercase">
-          Descripción
+          {t('description')}
           <textarea required rows={3} value={form.description} className="rounded-lg border px-2 py-2 w-full font-sans" onChange={e => setForm(prev => ({...prev, description: e.target.value}))}></textarea>
         </label>
         {/* Sección de Imágenes */}
         <div className="flex flex-col gap-2">
-          <label className="text-xs uppercase font-semibold mb-1">Imágenes del platillo (máx {MAX_IMAGES})</label>
+          <label className="text-xs uppercase font-semibold mb-1">{t('imagesMax', { max: MAX_IMAGES })}</label>
           <div className="flex flex-wrap gap-2 mb-2">
             {form.existingImages.map((url, idx) => (
               <div key={url + idx} className="relative w-20 h-20 rounded-lg overflow-hidden border">
                 <Image src={url} alt="Imagen actual" fill className="object-cover" />
-                <button type="button" aria-label="Quitar imagen" onClick={() => handleExistingImageRemove(idx)} className="absolute top-1 right-1 bg-black/70 text-white rounded-full px-2 py-1 text-xs">✕</button>
+                <button type="button" aria-label={t('removeImage')} onClick={() => handleExistingImageRemove(idx)} className="absolute top-1 right-1 bg-black/70 text-white rounded-full px-2 py-1 text-xs">✕</button>
               </div>
             ))}
             {form.newFiles.map((file, idx) => (
               <div key={file.name + idx} className="relative w-20 h-20 rounded-lg overflow-hidden border">
                 <img src={URL.createObjectURL(file)} alt={file.name} className="object-cover h-full w-full" />
-                <button type="button" aria-label="Quitar imagen" onClick={() => handleNewFileRemove(idx)} className="absolute top-1 right-1 bg-black/70 text-white rounded-full px-2 py-1 text-xs">✕</button>
+                <button type="button" aria-label={t('removeImage')} onClick={() => handleNewFileRemove(idx)} className="absolute top-1 right-1 bg-black/70 text-white rounded-full px-2 py-1 text-xs">✕</button>
               </div>
             ))}
           </div>
           {totalImagesSelected < MAX_IMAGES && (
             <input type="file" accept="image/*" multiple onChange={handleFileSelect} className="file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-[#009291] file:text-white file:font-semibold file:cursor-pointer border border-dashed rounded-xl w-full text-sm" />
           )}
-          <small className="text-[11px] text-gray-500">Puedes subir hasta {MAX_IMAGES} imágenes. Arrastra para reordenar luego de guardar.</small>
+          <small className="text-[11px] text-gray-500">{t('imagesHelp', { max: MAX_IMAGES })}</small>
         </div>
         <label className="flex flex-col gap-2 text-xs uppercase">
-          Alérgenos (opcional)
-          <input type="text" value={form.allergens} placeholder="Gluten, Lácteos..." className="rounded-lg border px-2 py-2 w-full text-base font-sans" onChange={e => setForm(prev => ({...prev, allergens: e.target.value}))} />
+          {t('allergens')}
+          <input type="text" value={form.allergens} placeholder={t('allergensPlaceholder')} className="rounded-lg border px-2 py-2 w-full text-base font-sans" onChange={e => setForm(prev => ({...prev, allergens: e.target.value}))} />
         </label>
         {/* Feedback */}
         {feedback && <div className="rounded-lg bg-green-100 px-2 py-2 text-green-700 text-center text-sm font-semibold">{feedback}</div>}
         {error && <div className="rounded-lg bg-red-100 px-2 py-2 text-red-700 text-center text-sm font-semibold">{error}</div>}
         <div className="flex flex-col gap-2 mt-2">
-          <button type="submit" disabled={submitting} className="w-full bg-[#00463D] text-white py-3 rounded-full font-bold uppercase text-base shadow hover:brightness-110 transition disabled:bg-opacity-60 font-sans">{submitting ? "Guardando…" : (form.id ? "Actualizar platillo" : "Guardar platillo")}</button>
-          {form.id && <button type="button" onClick={resetForm} className="w-full border border-[#00463D] bg-white text-[#00463D] py-3 rounded-full font-bold uppercase text-base shadow hover:bg-[#f4faf9] transition font-sans">Cancelar edición</button>}
+          <button type="submit" disabled={submitting} className="w-full bg-[#00463D] text-white py-3 rounded-full font-bold uppercase text-base shadow hover:brightness-110 transition disabled:bg-opacity-60 font-sans">{submitting ? t('saving') : (form.id ? t('update') : t('save'))}</button>
+          {form.id && <button type="button" onClick={resetForm} className="w-full border border-[#00463D] bg-white text-[#00463D] py-3 rounded-full font-bold uppercase text-base shadow hover:bg-[#f4faf9] transition font-sans">{t('cancel')}</button>}
         </div>
       </form>
       <section className="flex flex-col gap-2 mt-6">
-        <h2 className="font-display text-lg font-semibold text-[#00463D] text-center mb-3">Platillos publicados</h2>
-        {loading ? <div className="bg-white rounded-lg text-center py-6 text-gray-400">Cargando platillos…</div> : items.length === 0 ? <div className="bg-white border border-dashed rounded-lg text-center py-8 text-gray-500">Aún no tienes platillos registrados</div> : (
+        <h2 className="font-display text-lg font-semibold text-[#00463D] text-center mb-3">{t('publishedItems')}</h2>
+        {loading ? <div className="bg-white rounded-lg text-center py-6 text-gray-400">{t('loading')}</div> : items.length === 0 ? <div className="bg-white border border-dashed rounded-lg text-center py-8 text-gray-500">{t('empty')}</div> : (
           <ul className="flex flex-col gap-4">
             {items.map(item => (
               <li key={item.id} className="rounded-xl border border-gray-200 bg-white p-3 flex flex-col gap-2 shadow-sm">
@@ -403,8 +407,8 @@ export function OwnerMenuManager({ onClose }: OwnerMenuManagerProps) {
                   </div>
                 </div>
                 <div className="flex flex-col gap-2 mt-2 sm:flex-row sm:gap-4">
-                  <button type="button" onClick={() => populateForm(item)} className="w-full bg-[#009291] text-white rounded-full py-2 font-semibold uppercase text-sm font-sans">Editar</button>
-                  <button type="button" onClick={() => { setForm({...form, id: item.id}); handleDelete(); }} disabled={deleting} className="w-full bg-red-500 text-white rounded-full py-2 font-semibold uppercase text-sm font-sans disabled:bg-red-300">{deleting ? "Eliminando…" : "Eliminar"}</button>
+                  <button type="button" onClick={() => populateForm(item)} className="w-full bg-[#009291] text-white rounded-full py-2 font-semibold uppercase text-sm font-sans">{t('edit')}</button>
+                  <button type="button" onClick={() => { setForm({...form, id: item.id}); handleDelete(); }} disabled={deleting} className="w-full bg-red-500 text-white rounded-full py-2 font-semibold uppercase text-sm font-sans disabled:bg-red-300">{deleting ? t('deleting') : t('delete')}</button>
                 </div>
               </li>
             ))}

@@ -4,6 +4,9 @@ import { fontVariables } from "@/lib/fonts";
 import { MainHeader } from "@/components/layout/MainHeader";
 import { CartHydrator } from "@/components/cart/CartHydrator";
 import { ServiceWorkerRegister } from "@/components/layout/ServiceWorkerRegister";
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
+import { defaultLocale } from '@/i18n/config';
 
 export const metadata: Metadata = {
   title: {
@@ -14,11 +17,14 @@ export const metadata: Metadata = {
     "MesaLink permite a tus clientes escanear un QR, explorar el menú y enviar pedidos directo a cocina.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale = defaultLocale;
+  const messages = await getMessages();
+  
   const supabaseUrl = process.env["NEXT_PUBLIC_SUPABASE_URL"];
   const supabaseAnonKey = process.env["NEXT_PUBLIC_SUPABASE_ANON_KEY"];
   const supabaseScript =
@@ -30,13 +36,15 @@ export default function RootLayout({
       : null;
 
   return (
-    <html lang="es" className="h-full">
+    <html lang={locale} className="h-full">
       <body className={`${fontVariables} min-h-screen bg-[hsl(var(--background))] text-[hsl(var(--foreground))] antialiased`}>
         {supabaseScript ? <script dangerouslySetInnerHTML={{ __html: supabaseScript }} /> : null}
-        <ServiceWorkerRegister />
-        <CartHydrator />
-        <MainHeader />
-        {children}
+        <NextIntlClientProvider messages={messages} locale={locale}>
+          <ServiceWorkerRegister />
+          <CartHydrator />
+          <MainHeader />
+          {children}
+        </NextIntlClientProvider>
       </body>
     </html>
   );

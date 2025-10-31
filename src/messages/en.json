@@ -1,0 +1,81 @@
+{
+  "admin": {
+    "panel": {
+      "title": "Owner Panel",
+      "chooseAction": "Choose an action",
+      "description": "Manage your menu, operate your restaurant and add new tools as your restaurant grows."
+    },
+    "menu": {
+      "title": "Manage Menu",
+      "description": "Upload photos from your phone and edit your menu items information in one place.",
+      "addItem": "Add item",
+      "editItem": "Edit item",
+      "deleteItem": "Delete item",
+      "name": "Item name",
+      "price": "Price (MXN)",
+      "category": "Category",
+      "description": "Description",
+      "images": "Item images",
+      "imagesMax": "Item images (max {max})",
+      "imagesHelp": "You can upload up to {max} images. Drag to reorder after saving.",
+      "allergens": "Allergens (optional)",
+      "allergensPlaceholder": "Gluten, Dairy...",
+      "save": "Save item",
+      "update": "Update item",
+      "saving": "Saving…",
+      "cancel": "Cancel editing",
+      "delete": "Delete",
+      "deleting": "Deleting…",
+      "edit": "Edit",
+      "publishedItems": "Published items",
+      "loading": "Loading items…",
+      "empty": "You don't have any items registered yet",
+      "removeImage": "Remove image",
+      "noImagesError": "Add at least one image of the item",
+      "maxImagesError": "You can only upload up to {max} images per item.",
+      "savedSuccess": "Item added successfully",
+      "updatedSuccess": "Item updated successfully",
+      "deletedSuccess": "Item deleted successfully"
+    },
+    "qr": {
+      "title": "Generate Table QR Codes",
+      "description": "Give temporary access to your ordering menu with unique QR codes to use directly on your restaurant tables.",
+      "generate": "Generate table QR codes",
+      "generating": "Generating QRs…",
+      "table": "Table {number}",
+      "download": "Download QR",
+      "expiresAt": "QRs will be active until {time} ({date})",
+      "error": "Error generating QRs"
+    },
+    "common": {
+      "backToPanel": "Back to panel",
+      "logout": "Sign out",
+      "loggingOut": "Signing out…",
+      "refresh": "Refresh"
+    }
+  },
+  "menu": {
+    "title": "Menu",
+    "addToCart": "Add to cart",
+    "order": "Order",
+    "total": "Total",
+    "empty": "Menu in preparation",
+    "emptyDescription": "No items configured yet. Ask your administrator to add drinks, entrees and desserts from the panel."
+  },
+  "languageSelector": {
+    "welcome": "Welcome",
+    "selectLanguage": "Select your language",
+    "spanish": "Español",
+    "english": "English"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close"
+  }
+}
+

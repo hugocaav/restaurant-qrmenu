@@ -1,0 +1,81 @@
+{
+  "admin": {
+    "panel": {
+      "title": "Panel del propietario",
+      "chooseAction": "Elige una acción",
+      "description": "Gestiona tu menú, administra tu operación y agrega nuevas herramientas a medida que crece tu restaurante."
+    },
+    "menu": {
+      "title": "Administrar menú",
+      "description": "Sube fotos tomadas con tu celular y edita la información de tus platillos en un solo lugar.",
+      "addItem": "Agregar platillo",
+      "editItem": "Editar platillo",
+      "deleteItem": "Eliminar platillo",
+      "name": "Nombre del platillo",
+      "price": "Precio (MXN)",
+      "category": "Categoría",
+      "description": "Descripción",
+      "images": "Imágenes del platillo",
+      "imagesMax": "Imágenes del platillo (máx {max})",
+      "imagesHelp": "Puedes subir hasta {max} imágenes. Arrastra para reordenar luego de guardar.",
+      "allergens": "Alérgenos (opcional)",
+      "allergensPlaceholder": "Gluten, Lácteos...",
+      "save": "Guardar platillo",
+      "update": "Actualizar platillo",
+      "saving": "Guardando…",
+      "cancel": "Cancelar edición",
+      "delete": "Eliminar",
+      "deleting": "Eliminando…",
+      "edit": "Editar",
+      "publishedItems": "Platillos publicados",
+      "loading": "Cargando platillos…",
+      "empty": "Aún no tienes platillos registrados",
+      "removeImage": "Quitar imagen",
+      "noImagesError": "Agrega al menos una imagen del platillo",
+      "maxImagesError": "Solo puedes subir hasta {max} imágenes por platillo.",
+      "savedSuccess": "Platillo agregado correctamente",
+      "updatedSuccess": "Platillo actualizado correctamente",
+      "deletedSuccess": "Platillo eliminado correctamente"
+    },
+    "qr": {
+      "title": "Generar QR de mesas",
+      "description": "Da acceso temporal a tu menú de pedidos con QR únicos para usar directamente en las mesas de tu restaurante.",
+      "generate": "Generar códigos QR de mesas",
+      "generating": "Generando QRs…",
+      "table": "Mesa {number}",
+      "download": "Descargar QR",
+      "expiresAt": "Los QR estarán activos hasta las {time} ({date})",
+      "error": "Error al generar los QR"
+    },
+    "common": {
+      "backToPanel": "Volver al panel",
+      "logout": "Cerrar sesión",
+      "loggingOut": "Cerrando sesión…",
+      "refresh": "Actualizar"
+    }
+  },
+  "menu": {
+    "title": "Menú",
+    "addToCart": "Agregar al carrito",
+    "order": "Pedir",
+    "total": "Total",
+    "empty": "Menú en preparación",
+    "emptyDescription": "Aún no hay platillos configurados. Pide a tu administrador que agregue bebidas, entradas y postres desde el panel."
+  },
+  "languageSelector": {
+    "welcome": "Bienvenido",
+    "selectLanguage": "Selecciona tu idioma",
+    "spanish": "Español",
+    "english": "English"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "close": "Cerrar"
+  }
+}
+
