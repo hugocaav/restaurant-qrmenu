@@ -23,7 +23,21 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const locale = defaultLocale;
-  const messages = await getMessages();
+  
+  // Intentar obtener mensajes, pero no fallar si no se pueden obtener
+  let messages = {};
+  try {
+    messages = await getMessages({ locale }) ?? {};
+  } catch (error) {
+    console.warn('Failed to load messages:', error);
+    // Cargar mensajes por defecto desde el archivo
+    try {
+      messages = (await import(`@/messages/${locale}.json`)).default ?? {};
+    } catch {
+      // Si todo falla, usar objeto vacío
+      messages = {};
+    }
+  }
   
   const supabaseUrl = process.env["NEXT_PUBLIC_SUPABASE_URL"];
   const supabaseAnonKey = process.env["NEXT_PUBLIC_SUPABASE_ANON_KEY"];
